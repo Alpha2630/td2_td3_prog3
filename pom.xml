@@ -9,10 +9,17 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.alpha</groupId>
+<<<<<<< HEAD
     <artifactId>td3</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>td3</name>
     <description>td3</description>
+=======
+    <artifactId>td2_spring_introduction</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>td2_spring_introduction</name>
+    <description>td2_spring_introduction</description>
+>>>>>>> 47dee459f6be7de533a199332a6d5b7b073a6724
     <url/>
     <licenses>
         <license/>
