@@ -1,4 +1,4 @@
-package com.alpha.td3.validator;
+package com.alpha.td4.validator;
 
 public class StudentValidator {
 }

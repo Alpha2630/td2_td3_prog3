@@ -1,6 +1,6 @@
-package com.alpha.td3.Controller;
+package com.alpha.td4.Controller;
 
-import com.alpha.td3.model.Student;
+import com.alpha.td4.model.Student;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
