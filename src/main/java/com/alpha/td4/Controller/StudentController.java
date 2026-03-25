@@ -1,86 +1,38 @@
 package com.alpha.td4.Controller;
 
 import com.alpha.td4.model.Student;
+import com.alpha.td4.service.StudentService;
+import com.alpha.td4.validator.StudentValidator;
+import com.alpha.td4.exception.BadRequestException;
+
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/")
 public class StudentController {
 
-    private List<Student> students = new ArrayList<>();
-
-
-    @GetMapping("/welcome")
-    public ResponseEntity<String> welcome(@RequestParam(required = false) String name) { //ao arinan le requestparams matetik variable fon
-
-        if (name == null || name.isEmpty()) {
-            return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("Paramètre 'name' manquant");
-        }
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Welcome " + name);
-    }
-
+    private StudentService service = new StudentService();
+    private StudentValidator validator = new StudentValidator();
 
     @PostMapping("/students")
-    public ResponseEntity<?> addStudents(@RequestBody List<Student> newStudents) {
+    public ResponseEntity<?> createStudents(@RequestBody List<Student> students) {
 
         try {
-            students.addAll(newStudents);
+            validator.validate(students);
+
+            List<Student> result = service.addStudents(students);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)
-                    .body(students);
+                    .body(result);
 
-        } catch (Exception e) {
+        } catch (BadRequestException e) {
             return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Erreur serveur");
-        }
-    }
-
-
-    @GetMapping("/students")
-    public ResponseEntity<?> getStudents(@RequestHeader(value = "Accept", required = false) String accept) {
-
-        try {
-
-            if (accept == null) {
-                return ResponseEntity
-                        .status(HttpStatus.BAD_REQUEST)
-                        .body("Header Accept manquant");
-            }
-
-
-            if (accept.equals("text/plain")) {
-
-                String result = students.stream()
-                        .map(s -> s.getFirstName() + " " + s.getLastName())
-                        .reduce("", (a, b) -> a + (a.isEmpty() ? "" : ", ") + b);
-
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type", "text/plain")
-                        .body(result);
-            }
-
-
-            if (accept.equals("application/json")) {
-                return ResponseEntity
-                        .status(HttpStatus.OK)
-                        .header("Content-Type", "application/json")
-                        .body(students);
-            }
-
-            return ResponseEntity
-                    .status(HttpStatus.NOT_IMPLEMENTED)
-                    .body("Format non supporté");
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(e.getMessage());
 
         } catch (Exception e) {
             return ResponseEntity
