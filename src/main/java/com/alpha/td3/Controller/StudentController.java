@@ -14,7 +14,7 @@ public class StudentController {
 
 
     @GetMapping("/welcome")
-    public ResponseEntity<String> welcome(@RequestParam(required = false) String name) {
+    public ResponseEntity<String> welcome(@RequestParam(required = false) String name) { //ao arinan le requestparams matetik variable fon
 
         if (name == null || name.isEmpty()) {
             return ResponseEntity
